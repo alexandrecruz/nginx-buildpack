@@ -5,13 +5,7 @@ rm -f $psmgr
 mkfifo $psmgr
 
 #Evaluate config to get $PORT
-erb proxy/config/nginx.conf.erb > proxy/config/nginx.conf
-
-#Evaluate to write port file
-erb proxy/config/port_config.erb > proxy/config/port_config
-
-#Evaluate to write the domain name file
-erb proxy/config/domain_name.erb > proxy/config/domain_name
+erb config/nginx.conf.erb > config/nginx.conf
 
 n=1
 while getopts :f option ${@:1:2}
@@ -63,7 +57,7 @@ fi
 	#We expect nginx to run in foreground.
 	#We also expect a socket to be at /tmp/nginx.socket.
 	echo 'buildpack=nginx at=nginx-start'
-	bin/nginx -p . -c proxy/config/nginx.conf
+	bin/nginx -p . -c config/nginx.conf
 	echo 'nginx' >$psmgr
 ) &
 
